@@ -1,7 +1,7 @@
 # Usage
 # run irb
-# irb > require './calendar.rb'
-# irb > Calendar.new(year: 2023, month: 7).display
+# irb > require './calendar'
+# irb > puts Calendar.new(year: 2023, month: 7).display
 
 class Calendar
   require "date"
@@ -9,10 +9,15 @@ class Calendar
   def initialize(year:, month:)
     @begining_of_month = Date.new(year, month, 1)
     @end_of_month = Date.new(year, month, -1)
+  rescue Date::Error, TypeError => e
+    STDERR.puts "ERROR : 日付が正しくありません"
   end
 
   def display
-    return if !@begining_of_month || !@end_of_month
+    if !@begining_of_month || !@end_of_month
+      STDERR.puts "ERROR : 日付が設定されていません"
+      return
+    end
 
     calendar = ""
     column_size = header.map { |h| h.length }.max # 1マスの最大サイズ
